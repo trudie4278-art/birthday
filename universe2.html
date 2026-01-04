@@ -204,7 +204,7 @@ button:hover {
 const birthday = localStorage.getItem("birthday");
 
 if (!birthday) {
-  window.location.href = "birthday.html";
+  window.location.href = "index.html";
 }
 
 /* PARSE DAY & MONTH (ăn mọi format) */
@@ -215,7 +215,7 @@ const month = Number(parts[1]);
 /* BLOCK WRONG DATE */
 if (!(day === 23 && month === 1)) {
   alert("This universe opens only on a very special day ✨");
-  window.location.href = "birthday.html";
+  window.location.href = "index.html";
 }
 
 /* ELEMENTS */
