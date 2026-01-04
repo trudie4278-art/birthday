@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Universe</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Poppins:wght@400;500&display=swap');
+
+:root {
+  --radius: 16px;
+}
+
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at bottom, #1f0436, #3302a5);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ⭐ BACKGROUND STARS */
+.stars {
+  position: fixed;
+  inset: 0;
+  opacity: 0.35;
+  z-index: -1;
+  background-image: radial-gradient(white 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: moveStars 90s linear infinite;
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0; }
+  to { background-position: -1200px 1200px; }
+}
+
+/* 🌌 MAIN SECTION */
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: clamp(20px, 4vw, 48px);
+  text-align: center;
+}
+
+/* TITLE */
+.welcome {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-weight: 600;
+}
+
+/* 🖼️ IMAGE */
+.image-wrapper {
+  width: min(92vw, 560px);
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+}
+
+.universe-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+.universe-img:hover {
+  transform: scale(1.04);
+}
+
+/* CAPTION */
+.caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 8px 12px;
+  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  opacity: 0.9;
+}
+
+/* 🔘 CONTROLS */
+.controls {
+  display: flex;
+  gap: 14px;
+}
+
+button {
+  padding: 9px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #8e2de2, #4a00e0);
+  color: white;
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* ⚪ DOTS */
+.dots {
+  display: flex;
+  gap: 10px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+
+/* INFO TEXT */
+#infoText {
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  opacity: 0.85;
+  white-space: pre-line;
+}
+
+/* MEMORY BUTTON */
+.memory-btn {
+  display: none;
+  margin-top: 30px;
+  padding: 12px 28px;
+  font-size: 15px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #9f7aea, #805ad5);
+  color: white;
+  box-shadow: 0 0 15px rgba(159,122,234,0.5);
+  transition: 0.3s ease;
+}
+
+.memory-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(159,122,234,0.8);
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .universe-img:hover {
+    transform: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<main class="section">
+  <h1 class="welcome">Welcome to your universe 💫🪐🌙</h1>
+
+  <div class="image-wrapper">
+    <img id="universeImg" class="universe-img" src="" alt="Universe image">
+    <div class="caption" id="caption"></div>
+  </div>
+
+  <div class="controls">
+    <button onclick="prevImage()">◀ Prev</button>
+    <button onclick="nextImage()">Next ▶</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <p id="infoText"></p>
+
+  <button class="memory-btn" onclick="goToMemories()">
+    See your memories ✨
+  </button>
+</main>
+
+<script>
+/* 🔐 GET BIRTHDAY */
+const birthday = localStorage.getItem("birthday");
+
+if (!birthday) {
+  window.location.href = "birthday.html";
+}
+
+/* PARSE DAY & MONTH (ăn mọi format) */
+const parts = birthday.match(/\d+/g);
+const day = Number(parts[0]);
+const month = Number(parts[1]);
+
+/* BLOCK WRONG DATE */
+if (!(day === 23 && month === 1)) {
+  alert("This universe opens only on a very special day ✨");
+  window.location.href = "birthday.html";
+}
+
+/* ELEMENTS */
+const img = document.getElementById("universeImg");
+const captionEl = document.getElementById("caption");
+const dotsContainer = document.getElementById("dots");
+const infoText = document.getElementById("infoText");
+const memoryBtn = document.querySelector(".memory-btn");
+
+/* SHOW MEMORY BUTTON */
+memoryBtn.style.display = "block";
+
+/* GALLERY */
+let gallery = [
+  { src: "images/aquar.jpg", caption: "We were born to shine ✨" },
+  { src: "images/aquar1.jpg", caption: "Shine in your own way 💫" },
+  { src: "images/aquar2.jpg", caption: "You were never meant to stay small 🌌" }
+];
+
+let currentIndex = 0;
+let autoSlideInterval;
+
+infoText.innerText =
+`Born on ${birthday}
+Zodiac: Aquarius ♒
+This day marks the beginning of your light 💫`;
+
+/* FUNCTIONS */
+function showImage(index) {
+  img.style.opacity = 0;
+  setTimeout(() => {
+    img.src = gallery[index].src;
+    captionEl.innerText = gallery[index].caption;
+    updateDots();
+    img.style.opacity = 1;
+  }, 250);
+}
+
+function createDots() {
+  dotsContainer.innerHTML = "";
+  gallery.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    dot.onclick = () => {
+      currentIndex = i;
+      resetAutoSlide();
+      showImage(currentIndex);
+    };
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function updateDots() {
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === currentIndex);
+  });
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % gallery.length;
+  resetAutoSlide();
+  showImage(currentIndex);
+}
+
+function prevImage() {
+  currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+  resetAutoSlide();
+  showImage(currentIndex);
+}
+
+function startAutoSlide() {
+  autoSlideInterval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % gallery.length;
+    showImage(currentIndex);
+  }, 4000);
+}
+
+function resetAutoSlide() {
+  clearInterval(autoSlideInterval);
+  startAutoSlide();
+}
+
+function goToMemories() {
+  window.location.href = "memories.html";
+}
+
+/* INIT */
+createDots();
+showImage(0);
+startAutoSlide();
+</script>
+
+</body>
+</html>
