@@ -139,27 +139,6 @@ button:hover {
   opacity: 0.85;
   white-space: pre-line;
 }
-
-/* MEMORY BUTTON */
-.memory-btn {
-  display: none;
-  margin-top: 30px;
-  padding: 12px 28px;
-  font-size: 15px;
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #9f7aea, #805ad5);
-  color: white;
-  box-shadow: 0 0 15px rgba(159,122,234,0.5);
-  transition: 0.3s ease;
-}
-
-.memory-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 25px rgba(159,122,234,0.8);
-}
-
 /* 📱 MOBILE */
 @media (max-width: 768px) {
   .controls {
@@ -169,6 +148,98 @@ button:hover {
   .universe-img:hover {
     transform: none;
   }
+}
+/* 🌠 WHAT'S NEXT BUTTON */
+.next-btn {
+  margin-top: 26px;
+  padding: 12px 30px;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7ad9, #7a5cff);
+  box-shadow: 0 0 18px rgba(255, 122, 217, 0.35);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.next-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 28px rgba(255, 122, 217, 0.6);
+}
+/* 🎂 CAKE SCREEN (MOBILE FIRST) */
+.cake-section {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #2b1055, #12001f);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  z-index: 10;
+}
+
+.cake-section.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fairy-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* 🎂 CAKE */
+.cake-wrapper {
+  position: relative;
+  margin-top: 10px;
+}
+
+.cake {
+  width: 180px;
+  height: 90px;
+  background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 10px 25px rgba(255,105,180,0.4);
+}
+
+/* 🕯️ CANDLE */
+.candle {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 48px;
+  background: white;
+  border-radius: 6px;
+}
+
+.flame {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 22px;
+  background: radial-gradient(circle, #ffd700, #ff4500);
+  border-radius: 50% 50% 50% 50%;
+  animation: flicker 0.15s infinite alternate;
+}
+
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.1); }
+}
+
+.wish-text {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  opacity: 0.85;
 }
 </style>
 </head>
@@ -193,11 +264,25 @@ button:hover {
   <div class="dots" id="dots"></div>
 
   <p id="infoText"></p>
-
-  <button class="memory-btn" onclick="goToMemories()">
-    See your memories ✨
-  </button>
+  <button class="next-btn" onclick="goNext()">What's next✨</button>
 </main>
+<!-- 🎂 CAKE SECTION -->
+<section class="cake-section" id="cakeSection">
+  <p class="fairy-text">
+    Ta là bà tiên ✨  
+    Hãy ước một điều thật đẹp…  
+    rồi tap vào màn hình để thổi nến 🕯️
+  </p>
+
+  <div class="cake-wrapper" onclick="blowCandle()">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="cake"></div>
+  </div>
+
+  <p class="wish-text" id="wishText"></p>
+</section>
 
 <script>
 /* 🔐 GET BIRTHDAY */
@@ -213,7 +298,7 @@ const day = Number(parts[0]);
 const month = Number(parts[1]);
 
 /* BLOCK WRONG DATE */
-if (!(day === 23 && month === 1)) {
+if (!(day === 29 && month === 1)) {
   alert("This universe opens only on a very special day ✨");
   window.location.href = "index.html";
 }
@@ -223,11 +308,6 @@ const img = document.getElementById("universeImg");
 const captionEl = document.getElementById("caption");
 const dotsContainer = document.getElementById("dots");
 const infoText = document.getElementById("infoText");
-const memoryBtn = document.querySelector(".memory-btn");
-
-/* SHOW MEMORY BUTTON */
-memoryBtn.style.display = "block";
-
 /* GALLERY */
 let gallery = [
   { src: "images/aquar.jpg", caption: "We were born to shine ✨" },
@@ -297,15 +377,25 @@ function resetAutoSlide() {
   clearInterval(autoSlideInterval);
   startAutoSlide();
 }
-
-function goToMemories() {
-  window.location.href = "memories.html";
-}
-
 /* INIT */
 createDots();
 showImage(0);
 startAutoSlide();
+function goNext() {
+  document.querySelector("main").style.display = "none";
+  document.getElementById("cakeSection").classList.add("show");
+}
+let candleBlown = false;
+
+function blowCandle() {
+  if (candleBlown) return;
+
+  candleBlown = true;
+  document.getElementById("flame").style.opacity = 0;
+
+  document.getElementById("wishText").innerText =
+    "Điều ước của bạn đã được vũ trụ lắng nghe 🌙✨";
+}
 </script>
 
 </body>
