@@ -196,6 +196,9 @@ body {
       <div class="flame" id="flame"></div>
     </div>
     <div class="cake"></div>
+    <audio id="blowSound" src="images/blow.mp3" preload="auto"></audio>
+    <audio id="bgMusic" src="images/dung.mp3" preload="auto"></audio>
+
   </div>
 
   <p id="wishText"></p>
@@ -221,16 +224,39 @@ const birthday = localStorage.getItem("birthday");
 if (!birthday) location.href = "index.html";
 
 let blown = false;
+
+// 🎵 lấy audio
+const blowSound = document.getElementById("blowSound");
+const bgMusic = document.getElementById("bgMusic");
+
 function blowCandle() {
   if (blown) return;
   blown = true;
+
+  // 🔥 tắt nến
   document.getElementById("flame").style.opacity = 0;
+
+  // 💨 tiếng thổi nến
+  blowSound.currentTime = 0;
+  blowSound.play().catch(() => {});
+
+  // 🎶 nhạc nền (trễ nhẹ cho mượt)
+  setTimeout(() => {
+    bgMusic.volume = 0.6;
+    bgMusic.play().catch(() => {});
+  }, 500);
+
+  // ✨ đổi text
   document.getElementById("wishText").innerText =
     "Điều ước của bạn đã được vũ trụ lắng nghe 🌙✨";
-    setTimeout(() => {
+
+  // 💌 hiện thông báo có thư
+  setTimeout(() => {
     document.getElementById("mailNotify").classList.add("show");
   }, 700);
 }
+
+// ✍️ typewriter giữ nguyên
 const text =
 "Ta là bà tiên ✨ hãy ước một điều ước\nvà tap vào màn hình để thổi nến 🕯️";
 
@@ -244,8 +270,9 @@ function typeWriter() {
     setTimeout(typeWriter, speed);
   }
 }
-
 typeWriter();
+
+// 📩 thư
 function openLetter() {
   document.getElementById("letterOverlay").classList.add("show");
   document.getElementById("mailNotify").classList.remove("show");
@@ -255,6 +282,5 @@ function closeLetter() {
   document.getElementById("letterOverlay").classList.remove("show");
 }
 </script>
-
 </body>
 </html>
