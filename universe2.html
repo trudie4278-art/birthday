@@ -68,7 +68,7 @@ body {
 
 .universe-img { 
   width: 100%; 
-  height: 100%; 
+  aspect-ratio: 16/9;
   object-fit: cover; 
   border-radius: var(--radius); 
   transition: 
@@ -80,12 +80,6 @@ body {
 .universe-img:hover { 
   transform: scale(1.06); 
   filter: brightness(1.05) saturate(1.1);
-}
-@media (max-width: 480px) {
-  .image-wrapper {
-    width: 92vw;
-    aspect-ratio: 16 / 9;
-  }
 }
 .caption {
   position: absolute;
