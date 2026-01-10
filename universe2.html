@@ -57,25 +57,23 @@ body {
   font-size: 2rem;
 }
 
-/* IMAGE */
-/* IMAGE */
 .image-wrapper {
   width: min(92vw, 560px);
   aspect-ratio: 16 / 9;
   position: relative;
   overflow: hidden;
+  border-radius: 20px;
 }
 
 .universe-img { 
   width: 100%; 
-  aspect-ratio: 16/9;
+  height: 100%;
   object-fit: cover; 
-  border-radius: var(--radius); 
   transition: 
     transform 0.6s ease, 
     opacity 0.4s ease,
     filter 0.6s ease; 
-} 
+}
 
 .universe-img:hover { 
   transform: scale(1.06); 
