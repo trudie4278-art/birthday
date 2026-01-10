@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Wish 🎂</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #2b1055, #12001f);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cake-section {
+  text-align: center;
+}
+
+.fairy-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -20px;
+}
+
+.speech-bubble {
+  background: rgba(255,255,255,0.9);
+  color: #5b2c83;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  margin-bottom: 50px;
+}
+
+.fairy-img {
+  width: 140px;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(-10px); }
+}
+
+.cake-wrapper {
+  position: relative;
+  margin-top: 10px;
+}
+
+.cake {
+  width: 210px;
+  height: 110px;
+  background: linear-gradient(135deg, #ffd1dc, #ff9acb);
+  border-radius: 20px;
+}
+.cake::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: 10px;
+  width: 185px;
+  height: 40px;
+  background: linear-gradient(135deg, #ffe6f0, #ff85c0);
+  border-radius: 18px;
+}
+.cake::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 18px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #fff,
+    #fff 10px,
+    #ffd6e8 10px,
+    #ffd6e8 20px
+  );
+}
+.candle {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 38px;
+  background: white;
+}
+
+.flame {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 22px;
+  background: radial-gradient(circle, #ffd700, #ff4500);
+  border-radius: 50%;
+  animation: flicker .15s infinite alternate;
+}
+
+@keyframes flicker {
+  to { transform: translateX(-50%) scale(1.1); }
+}
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #5b2c83;
+  margin-left: 2px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+#mailNotify {
+  position: fixed;
+  bottom: 24px;
+  right: 50%;
+  transform: translateX(50%) scale(0.8);
+  background: linear-gradient(135deg, #ff6ec4, #7873f5);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s ease;
+  animation: floatMail 2.5s ease-in-out infinite;
+}
+
+#mailNotify.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(50%) scale(1);
+}
+
+@keyframes floatMail {
+  0%,100% { transform: translateX(50%) translateY(0); }
+  50% { transform: translateX(50%) translateY(-6px); }
+}
+#letterOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+  z-index: 999;
+}
+
+#letterOverlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.letter {
+  width: 85%;
+  max-width: 360px;
+  background: #672bac;
+  padding: 22px;
+  border-radius: 18px;
+  text-align: center;
+  animation: popUp 0.4s ease;
+}
+
+@keyframes popUp {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="cake-section">
+  <div class="fairy-wrapper">
+   <div class="speech-bubble">
+    <span id="typeText"></span>
+    <span class="cursor"></span>
+</div>
+  <div class="cake-wrapper" onclick="blowCandle()">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="cake"></div>
+  </div>
+
+  <p id="wishText"></p>
+</div>
+<!-- 📩 Thông báo có thư -->
+<div id="mailNotify" onclick="openLetter()">
+  📩 Có thư mới
+</div>
+
+<!-- 💌 Bức thư -->
+<div id="letterOverlay">
+  <div class="letter">
+    <h2> Gửi Nhật Nam</h2>
+    <p> Chúc mừng bạn đã bước sang tuổi 18. Trên hành trình sắp tới, mình hi vọng rằng những điều tốt đẹp nhất sẽ luôn tìm đến bạn. Mong rằng dù trưởng thành hơn về tuổi tác hay suy nghĩ, bạn vẫn luôn giữ được sự vui vẻ và hồn nhiên của tuổi 17.
+<br>
+Kí tên: Athu
+    </p>
+    <button onclick="closeLetter()">Đóng thư</button>
+  </div>
+</div>
+<script>
+const birthday = localStorage.getItem("birthday");
+if (!birthday) location.href = "index.html";
+
+let blown = false;
+function blowCandle() {
+  if (blown) return;
+  blown = true;
+  document.getElementById("flame").style.opacity = 0;
+  document.getElementById("wishText").innerText =
+    "Điều ước của bạn đã được vũ trụ lắng nghe 🌙✨";
+    setTimeout(() => {
+    document.getElementById("mailNotify").classList.add("show");
+  }, 700);
+}
+const text =
+"Ta là bà tiên ✨ hãy ước một điều ước\nvà tap vào màn hình để thổi nến 🕯️";
+
+let index = 0;
+const speed = 45;
+
+function typeWriter() {
+  if (index < text.length) {
+    document.getElementById("typeText").innerText += text.charAt(index);
+    index++;
+    setTimeout(typeWriter, speed);
+  }
+}
+
+typeWriter();
+function openLetter() {
+  document.getElementById("letterOverlay").classList.add("show");
+  document.getElementById("mailNotify").classList.remove("show");
+}
+
+function closeLetter() {
+  document.getElementById("letterOverlay").classList.remove("show");
+}
+</script>
+
+</body>
+</html>
