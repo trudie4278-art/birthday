@@ -141,8 +141,9 @@ transition: transform 0.35s ease, box-shadow 0.35s ease; }
 .next-btn:hover { 
 transform: scale(1.08); 
 box-shadow: 0 0 28px rgba(255, 122, 217, 0.6); }
-@media (max-width: 768px) {
-  .controls {
+@media (max-width: 768px)
+
+.controls {
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -167,7 +168,7 @@ box-shadow: 0 0 28px rgba(255, 122, 217, 0.6); }
 
   <p id="infoText"></p>
 
-  <button class="next-btn" onclick="goNext()">What's next ✨</button>
+  <button class="next-btn" onclick="goNext()">Next ✨</button>
 </main>
 
 <script>
@@ -175,8 +176,8 @@ const birthday = localStorage.getItem("birthday");
 if (!birthday) location.href = "index.html";
 
 const gallery = [
-  { src: "images/aquar.jpg", caption: "We were born to shine ✨" },
-  { src: "images/aquar1.jpg", caption: "Shine in your own way 💫" },
+  { src: "images/aquar.jpg", caption: "You were born to shine ✨" },
+  { src: "images/aquar1.jpg", caption: "The world needs your light" },
   { src: "images/aquar2.jpg", caption: "You were never meant to stay small 🌌" }
 ];
 
@@ -197,7 +198,7 @@ function nextImage() { i = (i + 1) % gallery.length; show(); }
 function prevImage() { i = (i - 1 + gallery.length) % gallery.length; show(); }
 
 function goNext() {
-  window.location.href = "cake.html";
+  window.location.href = "memories.html";
 }
 
 document.getElementById("infoText").innerText =

@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Nhật Nam</title>
+  <title>Happy Birthday Khánh Hưng</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
     * {
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
@@ -26,18 +28,13 @@
       text-align: center;
       animation: fadeIn 1.5s ease;
     }
-    .title{
-      font-family: 'Poppins', sans-serif;
+
+    .title {
       font-weight: 600;
-    }
-    h1 {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       font-size: clamp(20px, 6vw, 28px);
       letter-spacing: 1px;
-      white-space: nowrap;
-      text-align: center;
     }
-
 
     input {
       padding: 12px 18px;
@@ -45,12 +42,23 @@
       border-radius: 8px;
       border: none;
       outline: none;
-      margin-bottom: 20px;
       width: 260px;
       max-width: 80vw;
+      text-align: center;
+    }
+
+    #errorText {
+      min-height: 22px;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ffd6ff;
+    }
+    #birthdayInput {text-align: left;
+
     }
 
     button {
+      margin-top: 10px;
       padding: 12px 28px;
       font-size: 16px;
       border-radius: 25px;
@@ -81,23 +89,52 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1 class="title">When were you born? ✨</h1>
-    <input type="text" id="birthday" placeholder="DD / MM / YYYY">
-    <br>
-    <button onclick="goNext()">Continue</button>
+
+    <div class="birthday-box">
+      <input
+        type="text"
+        id="birthdayInput"
+        placeholder="DD / MM / YYYY"
+        maxlength="10"
+      >
+      <p id="errorText"></p>
+      <button onclick="goNext()">Continue</button>
+    </div>
   </div>
 
   <script>
+    const birthdayInput = document.getElementById("birthdayInput");
     function goNext() {
-      const date = document.getElementById("birthday").value;
-      if (date.trim() === "") {
-        alert("Please enter your birthday ✨");
+      const input = birthdayInput.value.trim();
+      const errorText = document.getElementById("errorText");
+      const correctBirthday = "23/01/2008"; // DD/MM/YYYY
+
+      errorText.innerText = "";
+
+      if (input === "") {
+        errorText.innerText = "Nhập ngày sinh trước đã nha ✨";
         return;
       }
-      localStorage.setItem("birthday", date);
+
+      const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!regex.test(input)) {
+        errorText.innerText = "Định dạng đúng là DD / MM / YYYY nha 🌙";
+        return;
+      }
+
+      if (input !== correctBirthday) {
+        errorText.innerText = "Sai rồi, hãy nhập lại đi";
+        return;
+      }
+
+      // đúng → fade & chuyển trang
+      localStorage.setItem("birthday", input);
       document.body.classList.add("fade-out");
+
       setTimeout(() => {
         window.location.href = "universe2.html";
       }, 800);
