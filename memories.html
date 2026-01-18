@@ -7,7 +7,7 @@
 <style>
   body {
     margin: 0;
-    background: radial-gradient(circle at top, #12032e, #000);
+    background: radial-gradient(circle at top, #17033b, #070036);
     color: white;
     font-family: 'Poppins', sans-serif;
     text-align: center;
@@ -30,122 +30,141 @@
     border-radius: 20px;
     box-shadow: 0 0 20px rgba(255,255,255,0.15);
   }
-
-  .caption {
-    margin-top: 10px;
-    opacity: 0.85;
-    font-size: 14px;
-  }
-.next-btn { margin-top: 26px; 
-padding: 12px 30px; 
+.next-btn { margin-top: auto; 
+  margin-bottom: 20px;
+padding: 12px 25px; 
 font-size: 0.95rem; 
 border-radius: 999px; 
 background: linear-gradient(135deg, #ff7ad9, #7a5cff); 
 transition: transform 0.35s ease, box-shadow 0.35s ease; } 
 .next-btn:hover { 
 transform: scale(1.08); }
-@media (max-width: 768px)
+@media (max-width: 768px){}
 </style>
 </head>
 <body>
   <h1>Let's take a look at your beautiful memories ✨</h1>
+<p style="opacity:0.7;font-size:14px">
+  Tap anywhere to start the music 🎧
+</p>
   <div class="gallery">
     <div class="memory">
       <img src="images/1.jpg">
-      <div class="caption"></div>
     </div>
     <div class="memory">
       <img src="images/8.jpg">
-      <div class="caption"></div>
-       <div class="memory">
+      </div>
+    <div class="memory">
       <img src="images/26.jpg">
-      <div class="caption"></div>
-       <div class="memory">
+      </div>
+    <div class="memory">
       <img src="images/27.jpg">
-      <div class="caption"></div>
-       <div class="memory">
+      </div>
+    <div class="memory">
       <img src="images/28.jpg">
-      <div class="caption"></div>
-       <div class="memory">
+      </div>
+    <div class="memory">
       <img src="images/30.jpg">
-      <div class="caption"></div>
-       <div class="memory">
+      </div>
+    <div class="memory">
       <img src="images/31.jpg">
-      <div class="caption"></div>
+      </div>
     <div class="memory">
       <img src="images/9.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/10.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/11.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/12.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/13.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/14.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/20.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/21.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/15.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/17.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/18.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/19.jpg">
-      <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
+      <img src="images/4.jpg">
+      </div>
+  <div class="memory">
       <img src="images/22.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+      </div>
+  <div class="memory">
       <img src="images/23.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+     
+      </div>
+  <div class="memory">
       <img src="images/24.jpg">
-    <div class="caption"></div>
+   
+      </div>
     <div class="memory">
       <img src="images/2.jpg">
-      <div class="caption"></div>
-    <div class="memory">
+    
+      </div>
+  <div class="memory">
       <img src="images/5.jpg">
-      <div class="caption"></div>
-      <div class="memory">
+     
+      </div>
+  <div class="memory">
       <img src="images/16.jpg">
-    <div class="caption"></div>
-    <div class="memory">
+    
+      </div>
+  <div class="memory">
       <img src="images/7.jpg">
-    <div class="caption"></div>
+      </div>
     <div class="memory">
       <img src="images/25.jpg">
-      <div class="caption"></div>
+    </div>
     <div class="memory">
       <img src="images/3.jpg">
-    <div class="caption"></div>
-    <div class="memory"></div>
-    <img src="images/29.jpg">
-      <div class="caption"></div>
-  </div>
-  <div>
-    <button class="next-btn" onclick="goNext()"> Điều bí ẩn 🗝️</button>
-  </div>
-  <script>
-    function goNext() {
-  window.location.href = "cake.html";
-}
-    </script>
+    </div>
+    <div class="memory">
+      <img src="images/29.jpg">
+    </div>
+</div>
+  <button class="next-btn" onclick="goNext()"> Điều bí ẩn 🗝️</button>
+  <audio id="bgMusic" src="images/music.mp3" loop></audio>
+<script>
+  const music = document.getElementById("bgMusic");
+  let started = false;
+
+  function startMusic() {
+    if (started) return;
+    started = true;
+    music.volume = 0.3;
+    music.play();
+  }
+
+  // Click ở đâu cũng bật nhạc
+  document.addEventListener("click", startMusic);
+
+  function goNext() {
+    music.pause();
+    music.currentTime = 0;
+    window.location.href = "cake.html";
+  }
+</script>
 </body>
 </html>
