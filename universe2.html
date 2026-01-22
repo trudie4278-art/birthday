@@ -147,6 +147,29 @@ box-shadow: 0 0 28px rgba(255, 122, 217, 0.6); }
     flex-wrap: wrap;
     justify-content: center;
   }
+  .dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: 
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dots span.active {
+  background: #fff;
+  transform: scale(1.4);
+  box-shadow: 0 0 8px rgba(255,255,255,0.8);
+}
 </style>
 </head>
 
@@ -160,6 +183,7 @@ box-shadow: 0 0 28px rgba(255, 122, 217, 0.6); }
     <img id="universeImg" class="universe-img">
     <div class="caption" id="caption"></div>
   </div>
+  <div class="dots" id="dots"></div>
 
   <div class="controls">
     <button onclick="prevImage()">◀ Prev</button>
@@ -170,7 +194,6 @@ box-shadow: 0 0 28px rgba(255, 122, 217, 0.6); }
 
   <button class="next-btn" onclick="goNext()"> Xem kỉ niệm </button>
 </main>
-
 <script>
 const birthday = localStorage.getItem("birthday");
 if (!birthday) location.href = "index.html";
@@ -184,6 +207,24 @@ const gallery = [
 let i = 0;
 const img = document.getElementById("universeImg");
 const cap = document.getElementById("caption");
+const dotsContainer = document.getElementById("dots");
+
+/* tạo dots */
+gallery.forEach((_, index) => {
+  const dot = document.createElement("span");
+  dot.onclick = () => {
+    i = index;
+    show();
+    resetAutoSlide();
+  };
+  dotsContainer.appendChild(dot);
+});
+
+function updateDots() {
+  [...dotsContainer.children].forEach((dot, index) => {
+    dot.classList.toggle("active", index === i);
+  });
+}
 
 function show() {
   img.style.opacity = 0;
@@ -191,11 +232,28 @@ function show() {
     img.src = gallery[i].src;
     cap.innerText = gallery[i].caption;
     img.style.opacity = 1;
+    updateDots();
   }, 200);
 }
 
-function nextImage() { i = (i + 1) % gallery.length; show(); }
-function prevImage() { i = (i - 1 + gallery.length) % gallery.length; show(); }
+function nextImage() {
+  i = (i + 1) % gallery.length;
+  show();
+  resetAutoSlide();
+}
+
+function prevImage() {
+  i = (i - 1 + gallery.length) % gallery.length;
+  show();
+  resetAutoSlide();
+}
+
+let autoSlide = setInterval(nextImage, 3000);
+
+function resetAutoSlide() {
+  clearInterval(autoSlide);
+  autoSlide = setInterval(nextImage, 3000);
+}
 
 function goNext() {
   window.location.href = "memories.html";
